@@ -1,296 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>TheEndgame - Skeleton Demo</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(120deg, #191919 0%, #8B4513 100%);
-      font-family: 'Georgia', serif;
-      color: #fff;
-      min-height: 100vh;
-    }
+<meta charset="UTF-8" />
+<title>Chess Zine - Out of The Box</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at center, #121212, #0c0c0c);
+    color: #dec27f;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+  }
 
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-      padding: 20px 0;
-      background: rgba(20, 20, 20, 0.9);
-      box-shadow: 0 6px 32px rgba(0,0,0,0.5);
-      backdrop-filter: blur(7px);
-      border-bottom: 2px solid #68411b;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      font-size: 1.18em;
-    }
-    .nav-btn {
-      position: relative;
-      padding: 12px 24px 12px 44px;
-      margin: 0 13px;
-      border-radius: 16px;
-      color: #f1c073;
-      background: rgba(80,60,40,0.15);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-      transition: transform 0.28s, color 0.22s, background 0.23s;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      font-size: inherit;
-      letter-spacing: 1.1px;
-      font-family: inherit;
-    }
-    .nav-btn:hover, .nav-btn:focus {
-      color: #fff;
-      background: rgba(120,80,40,0.24);
-      transform: translateY(-5px) scale(1.09);
-      box-shadow: 0 8px 38px #8B4513c4;
-    }
-    .play-now-menu {
-      position: relative;
-      display: inline-block;
-    }
-    /* (No chess-set-img for now) */
+  /* Vertical Sidebar Navigation */
+  nav.sidebar {
+    width: 80px;
+    background: #1b1b1bcc;
+    box-shadow: inset -2px 0 6px #42341680;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    gap: 20px;
+    border-radius: 0 25px 25px 0;
+  }
+  nav .nav-btn {
+    color: #ac8e43;
+    font-size: 0.9em;
+    text-align: center;
+    cursor: pointer;
+    width: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    border: 2px solid #3f2e0d;
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    user-select: none;
+    box-shadow: 0 0 1px #dec27f66;
+    font-weight: 600;
+  }
+  nav .nav-btn:hover {
+    color: #fff1a8;
+    background: #7a6715;
+    box-shadow:
+      0 0 6px 1.5px #fff7a7cc,
+      0 0 15px 3px #ffdb4dcc,
+      inset 0 0 8px 1px #ffdb4dcc;
+    transform: scale(1.3) rotate(15deg);
+  }
+  nav .nav-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin-bottom: 20px;
+    font-size: 0.75em;
+    user-select:none;
+  }
 
-    .top-box {
-      display: flex;
-      align-items: flex-end;
-      column-gap: 7vw;
-      justify-content: left;
-      height: 48vh;
-      min-height: 380px;
-      background: linear-gradient(to right, #171717 0%, #8B4513 99%);
-      padding-left: 10vw;
-      padding-top: 46px;
-      position: relative;
-      z-index: 3;
-    }
-    .knight-placeholder, .second-placeholder {
-      width: 106px;
-      height: 180px;
-      margin-bottom: 28px;
-      background: linear-gradient(120deg, #222 30%, #745f45 100%);
-      border-radius: 25%;
-      box-shadow: 0 14px 68px #000a, 0 1px 18px #fffc2c16;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.12em;
-      font-family: Georgia, serif;
-      color: #ffe2ba;
-      letter-spacing: 2px;
-      font-weight: bold;
-      text-align: center;
-      text-shadow: 1.5px 2.5px 6px #000a;
-      transition: transform 0.28s, box-shadow 0.22s;
-      cursor: pointer;
-      z-index: 9;
-    }
-    .knight-placeholder:hover {
-      transform: scale(1.14) rotate(-10deg);
-      box-shadow: 0 32px 88px #d73030d9, 0 1.5px 23px #fffc2c16;
-      background: linear-gradient(120deg, #333 30%, #c32a2a 100%);
-    }
-    .second-placeholder:hover {
-      transform: scale(1.17) rotate(12deg);
-      box-shadow: 0 34px 100px #fadfae8a, 0 1.5px 13px #fffc2c16;
-      background: linear-gradient(120deg, #f8f8f8 30%, #b2854a 100%);
-      color: #8B4513;
-    }
-    .choice-msg {
-      position: absolute;
-      left: 49vw;
-      top: 70px;
-      font-size: 1.28em;
-      color: #ffecbc;
-      background: rgba(50,28,5,0.64);
-      border-radius: 12px 22px 14px 24px/30px 16px 32px 10px;
-      padding: 18px 32px;
-      font-family: 'Georgia', serif;
-      box-shadow: 0 3px 22px #7f480026;
-      min-width: 212px;
-      pointer-events: none;
-      opacity: 0.93;
-      z-index: 12;
-      transition: opacity 0.27s;
-      display: none;
-    }
+  /* Main content panel */
+  main.content {
+    flex-grow: 1;
+    padding: 40px 48px 36px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  main h1 {
+    margin: 0 0 28px 0;
+    font-weight: 900;
+    font-size: 3.4em;
+    letter-spacing: 0.06em;
+    line-height: 1.04;
+    color: #ffde59;
+    text-shadow: 0 0 8px #efcd18;
+  }
+  main p.subtitle {
+    max-width: 450px;
+    font-size: 1.17em;
+    line-height: 1.5;
+    color: #f4e5a6cc;
+  }
 
-    .section-title {
-      font-size: 2.5em;
-      color: #f4cfb5;
-      margin-bottom: 6px;
-      font-family: 'Palatino Linotype', Georgia, serif;
-      letter-spacing: 1.1px;
-    }
-    .section-subtitle {
-      font-size: 1.23em;
-      font-style: italic;
-      color: #faefd6da;
-    }
-    .featured-section {
-      width: 99vw;
-      background: linear-gradient(115deg,#6f3e00 14%,#24201a 98%);
-      min-height: 29vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: end;
-      padding-top: 16px;
-      padding-bottom: 42px;
-      position: relative;
-      margin-left: -10px;
-      margin-top: 0;
-      box-shadow: 0 8px 34px #7a744011;
-    }
-    .overlay {
-      position: absolute; 
-      top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(0,0,0,0.38); 
-      border-radius: 0 0 12px 12px;
-      z-index: 1;
-    }
-    .featured-section > *:not(.overlay) {
-      position: relative;
-      z-index: 2;
-    }
+  /* Hero Navigation Board */
+  .hero-nav-board {
+    margin-top: 42px;
+    display: grid;
+    grid-template-columns: repeat(3, 110px);
+    grid-gap: 30px 42px;
+    justify-content: start;
+  }
 
-    .chess-pieces-flex {
-      display: inline-flex;
-      gap: 36px;
-      justify-content: center;
-      align-items: end;
-      background: linear-gradient(to right, #201912 40%, #806754 90%);
-      padding: 26px 30px 28px 30px;
-      border-radius: 22px;
-      box-shadow: 0 3px 17px #84735a1a;
-    }
-    .chess-piece-placeholder {
-      width: 80px;
-      height: 130px;
-      border-radius: 18px 6px 18px 6px/19px 35px 18px 21px;
-      background: linear-gradient(120deg,#333 20%,#bd8d53 85%);
-      color: #ffe2ba;
-      font-size: 1em;
-      font-weight: bold;
-      text-align: center;
-      line-height: 130px;
-      box-shadow: 0 2px 18px #191a;
-      letter-spacing: 0.5px;
-      transition: transform .32s,background .21s;
-      cursor: pointer;
-      z-index: 2;
-    }
-    .chess-piece-placeholder:hover {
-      transform: translateY(-21px) scale(1.1);
-      background: linear-gradient(120deg,#f5eee3 20%,#91603f 95%);
-      color: #8B4513;
-    }
-    #witty-line {
-      background: rgba(44,44,24,0.13);
-      border-radius: 9px;
-      box-shadow: 0 1.2px 9px #2225;
-      padding: 12px 22px;
-      color: #f3e8c6;
-      margin-bottom: 12px;
-    }
-  </style>
+  /* Individual chess piece circular tile */
+  .chess-tile {
+    cursor: pointer;
+    position: relative;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #523f07, #241a06);
+    box-shadow:
+      inset 0 0 18px #ddbf6706,
+      0 0 10px 2px #e8cc19cc,
+      0 12px 18px -4px #462f02aa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 2.36em;
+    color: #fedc84;
+    text-shadow:
+      0 0 14px #ecde7e91,
+      0 3px 23px #46380f4a;
+    user-select: none;
+    transition: 0.3s ease all;
+  }
+  .chess-tile:hover {
+    box-shadow:
+      inset 0 0 32px 8px #fee280cc,
+      0 0 36px 10px #ffec42cc,
+      0 18px 25px 0 #e6cd0711;
+    color: #fffbea;
+    transform: scale(1.17) rotate(25deg);
+  }
+
+  /* Tooltip on hover */
+  .tooltip {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e6cc54cc;
+    color: #1e1402dd;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 0.8em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
+  .chess-tile:hover .tooltip {
+    opacity: 1;
+  }
+
+  /* Footer with some links */
+  footer.site-footer {
+    margin-top: auto;
+    background: #201a070d;
+    font-size: 0.8em;
+    padding: 12px 36px;
+    color: #b9b08d;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+  footer a {
+    color: #ffdb60;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  footer a:hover {
+    color: #fffedc;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Chessboard navigation -->
-  <div class="header-container">
-    <div class="nav-btn">Home</div>
-    <div class="play-now-menu"><div class="nav-btn">Play Now</div></div>
-    <div class="nav-btn">Learn</div>
-    <div class="nav-btn">Legendary Games</div>
-    <div class="nav-btn">Blogs</div>
-  </div>
+<!-- Vertical chess column navigation -->
+<nav class="sidebar" aria-label="Site Navigation">
+  <div class="nav-label">MENU</div>
+  <button class="nav-btn" aria-label="Home">H</button>
+  <button class="nav-btn play-now" aria-label="Play Now">P</button>
+  <button class="nav-btn" aria-label="Learn">L</button>
+  <button class="nav-btn" aria-label="Legendary Games">G</button>
+  <button class="nav-btn" aria-label="Blogs">B</button>
+</nav>
 
-  <!-- Knights selector (no images, colored blocks for placeholders) -->
-  <div class="top-box">
-    <div class="knight-placeholder">Black<br>Knight</div>
-    <div class="second-placeholder">White<br>Knight</div>
-    <div id="hover-message" class="choice-msg">Hover over a knight to start the game.</div>
-  </div>
+<main class="content" role="main">
+  <h1>TheEndgame</h1>
+  <p class="subtitle">The ultimate chess zine bringing royal stories, history, and strategy to life.</p>
 
-  <!-- Featured headline section -->
-  <div class="featured-section">
-    <div class="overlay"></div>
-    <div class="section-title">Endgame: The Ultimate Source of Chess</div>
-    <div class="section-subtitle">
-      Because kings know it’s not over until the last move.
+  <section class="hero-nav-board" aria-label="Chess Zine Navigation">
+    <div class="chess-tile" tabindex="0">
+      K
+      <div class="tooltip">King - The ruler of the kingdom.</div>
     </div>
-  </div>
-
-  <div style="position:relative;left:50%;transform:translateX(-50%);width:100vw;background:rgba(114,102,86,0.525);color:#fff;text-align:center;padding:20px 0 14px 0;font-family:Georgia,serif;margin:0;box-sizing:border-box;overflow:hidden;z-index:10;border-radius:0 0 16px 16px;box-shadow:0 8px 32px #473d2214;">
-    <span class="section-title" style="font-size:1.3em;margin-bottom:0;">Meet the Royals and Rebels of the Chessboard:</span><br>
-    <span class="section-subtitle" style="font-size:1em;">
-      Every chess piece has a personality — some rule, some rebel, but all play their part in the epic battle for the throne.
-    </span>
-  </div>
-  
-  <!-- Chess pieces row (placeholder blocks) -->
-  <div id="chess-pieces-row" style="text-align: center; margin: 54px 0;">
-    <div class="chess-pieces-flex">
-      <div class="chess-piece-placeholder">King</div>
-      <div class="chess-piece-placeholder">Queen</div>
-      <div class="chess-piece-placeholder">Rook</div>
-      <div class="chess-piece-placeholder">Bishop</div>
-      <div class="chess-piece-placeholder">Knight</div>
-      <div class="chess-piece-placeholder">Pawn</div>
+    <div class="chess-tile" tabindex="0">
+      Q
+      <div class="tooltip">Queen - The powerhouse of the board.</div>
     </div>
-    <p id="witty-line">
-      Hover over a piece to see its witty description.
-    </p>
-  </div>
-  
-  <!-- Chessboard container (fake for layout preview) -->
-  <div id="board1" style="width: 400px; height: 400px; margin: 30px auto; background: #201a14b4; border-radius: 10px; display:flex;align-items:center;justify-content:center;color:#d8a86e;font-size:2em;">
-    (Chessboard JS)
-  </div>
-  
-  <script>
-    // Static witty lines for demo (no images)
-    const wittyLine = document.getElementById('witty-line');
-    const pieceWitty = {
-      King: "King: The ruler of the board. Moves one square at a time — slow and steady wins the throne.",
-      Queen: "Queen: The powerhouse — moves any number of squares in any direction. Basically, the boss’s boss.",
-      Rook: "Rook: Straight shooter along ranks and files. Think of it as the castle’s express elevator.",
-      Bishop: "Bishop: Moves diagonally like it’s cutting through the crowd stealthily. Sometimes sneaky, always sharp.",
-      Knight: "Knight: The wild card — jumps in an L-shape over others. The chessboard’s ninja.",
-      Pawn: "Pawn: The foot soldier with limited moves, but hey, they can transform into any piece — never underestimate the little guys."
-    };
-    document.querySelectorAll('.chess-piece-placeholder').forEach(piece => {
-      piece.addEventListener('mouseenter', () => {
-        wittyLine.textContent = pieceWitty[piece.textContent.trim()] || '';
-      });
-      piece.addEventListener('mouseleave', () => {
-        wittyLine.textContent = 'Hover over a piece to see its witty description.';
-      });
-    });
-    // Knight choose message UI
-    const blackKnight = document.querySelector('.knight-placeholder');
-    const whiteKnight = document.querySelector('.second-placeholder');
-    const hoverMsg = document.getElementById('hover-message');
-    blackKnight.addEventListener('mouseenter', () => {
-      hoverMsg.textContent = 'Start game as Black';
-      hoverMsg.style.display = 'block';
-    });
-    blackKnight.addEventListener('mouseleave', () => {
-      hoverMsg.style.display = 'none';
-    });
-    whiteKnight.addEventListener('mouseenter', () => {
-      hoverMsg.textContent = 'Start game as White';
-      hoverMsg.style.display = 'block';
-    });
-    whiteKnight.addEventListener('mouseleave', () => {
-      hoverMsg.style.display = 'none';
-    });
-  </script>
+    <div class="chess-tile" tabindex="0">
+      R
+      <div class="tooltip">Rook - The fortress.</div>
+    </div>
+    <div class="chess-tile" tabindex="0">
+      B
+      <div class="tooltip">Bishop - Diagonal master.</div>
+    </div>
+    <div class="chess-tile" tabindex="0">
+      N
+      <div class="tooltip">Knight - The jumpy ninja.</div>
+    </div>
+    <div class="chess-tile" tabindex="0">
+      P
+      <div class="tooltip">Pawn - The brave soldier.</div>
+    </div>
+  </section>
+
+  <footer class="site-footer" role="contentinfo">
+    &copy; 2025 TheEndgame Chess Zine. All rights reserved. |
+    <a href="privacy.html">Privacy Policy</a> |
+    <a href="terms.html">Terms of Use</a>
+  </footer>
+</main>
+
 </body>
 </html>
