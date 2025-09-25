@@ -2,210 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>TheEndgame - Visually Stunning</title>
+  <title>TheEndgame - Chess Zine</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(120deg, #191919 0%, #8B4513 100%);
+      margin: 0; padding: 0;
+      background: linear-gradient(120deg, #171717 0%, #8B4513 100%);
       font-family: 'Georgia', serif;
       color: #fff;
-      min-height: 100vh;
     }
 
-    /* Modern glassy chessboard-inspired nav */
+    /* Chessboard Navigation */
     .header-container {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       gap: 30px;
       padding: 20px 0;
-      background: rgba(20, 20, 20, 0.9);
-      box-shadow: 0 6px 32px rgba(0,0,0,0.5);
-      backdrop-filter: blur(7px);
-      border-bottom: 2px solid #68411b;
+      background: #000b;
+      box-shadow: 0 3px 30px #8B451366;
       position: sticky;
-      top: 0;
-      z-index: 1000;
-      font-size: 1.18em;
+      top: 0; z-index: 100;
     }
     .nav-btn {
       position: relative;
-      padding: 12px 24px 12px 44px;
-      margin: 0 13px;
-      border-radius: 16px;
-      color: #f1c073;
-      background: rgba(80,60,40,0.15);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-      transition: transform 0.28s, color 0.22s, background 0.23s;
-      cursor: pointer;
-      border: none;
+      padding: 10px 28px 10px 44px;
+      background: rgba(40,30,20,0.17);
+      color: #ffe6a6;
+      border-radius: 15px;
       outline: none;
-      font-size: inherit;
-      letter-spacing: 1.1px;
+      font-size: 1em;
+      letter-spacing: 1px;
       font-family: inherit;
+      cursor: pointer;
+      transition: transform .25s, background .22s, color .18s;
+      user-select: none;
+      border: none;
     }
     .nav-btn:hover, .nav-btn:focus {
+      background: #8B4513;
       color: #fff;
-      background: rgba(120,80,40,0.24);
-      transform: translateY(-5px) scale(1.09);
-      box-shadow: 0 8px 38px #8B4513c4;
+      transform: translateY(-6px) scale(1.1);
+      box-shadow: 0 14px 38px #8B4513b0;
     }
-    /* Play Now mini chess set slide-up */
     .play-now-menu {
-      position: relative;
-      display: inline-block;
+      position: relative; display: inline-block;
     }
     .chess-set-img {
       position: absolute;
-      left: 55%;
-      bottom: -52px;
-      width: 68px;
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.5s cubic-bezier(0.24,1,.4,1), opacity 0.32s;
-      transform: translate(-50%,20px) scale(0.85);
-      filter: drop-shadow(0 6px 12px #000b);
-      z-index: 10;
+      left: 50%; bottom: -50px; width: 70px;
+      z-index: 100;
+      opacity: 0; pointer-events: none;
+      transform: translate(-50%,20px) scale(.9);
+      transition: opacity .36s, transform .48s cubic-bezier(.25, 1, .5, 1);
+      filter: drop-shadow(0 8px 36px #201);
     }
     .play-now-menu:hover .chess-set-img {
       opacity: 1;
-      transform: translate(-50%,0) scale(1.15);
+      transform: translate(-50%,0) scale(1.1);
     }
 
-    /* Knights selection UI */
+    /* Knights Hero Area */
     .top-box {
       display: flex;
       align-items: flex-end;
-      column-gap: 7vw;
-      justify-content: left;
-      height: 48vh;
-      min-height: 380px;
-      background: linear-gradient(to right, #171717 0%, #8B4513 99%);
-      padding-left: 10vw;
-      padding-top: 46px;
-      position: relative;
-      z-index: 3;
+      height: 44vh;
+      min-height: 320px;
+      background: linear-gradient(to right, #1c1b18 0%, #8B4513 99%);
+      padding-left: 8vw; column-gap: 3vw;
+      position: relative; z-index: 1;
     }
-    .knight-img,.second-img {
-      height: 64%;
-      max-height: 250px;
-      min-width: 92px;
-      margin-bottom: 28px;
-      background: url('images/shine.svg') center/cover no-repeat;
-      border-radius: 25%;
-      box-shadow: 0 14px 68px #000a, 0 1px 18px #fffc2c16;
-      transition: transform 0.28s, box-shadow 0.22s;
-      cursor: pointer;
-      z-index: 9;
+    .knight-img, .second-img {
+      max-height: 240px; width: auto;
+      min-width: 90px;
+      margin-bottom: 30px;
+      background: linear-gradient(120deg, #4442, transparent);
+      border-radius: 30% 21%;
+      box-shadow: 0 18px 44px #110b;
+      transition: transform .24s, box-shadow .17s;
+      cursor: pointer; 
+      z-index: 2;
     }
-    .knight-img:hover {
-      transform: scale(1.14) rotate(-10deg);
-      box-shadow: 0 32px 88px #d73030d9, 0 1.5px 23px #fffc2c16;
-    }
-    .second-img:hover {
-      transform: scale(1.17) rotate(12deg);
-      box-shadow: 0 34px 100px #fbeed88a, 0 1.5px 13px #fffc2c16;
-    }
-    /* Selection message */
+    .knight-img:hover {transform: scale(1.14) rotate(-8deg); box-shadow: 0 40px 98px #fa184866;}
+    .second-img:hover {transform: scale(1.13) rotate(10deg); box-shadow: 0 34px 94px #fbeed888;}
+    /* “Start as Black/White” bubble */
     .choice-msg {
-      position: absolute;
-      left: 49vw;
-      top: 70px;
-      font-size: 1.28em;
-      color: #ffecbc;
-      background: rgba(50,28,5,0.64);
-      border-radius: 12px 22px 14px 24px/30px 16px 32px 10px;
-      padding: 18px 32px;
-      font-family: 'Georgia', serif;
-      box-shadow: 0 3px 22px #7f480026;
-      min-width: 212px;
-      pointer-events: none;
-      opacity: 0.93;
-      z-index: 12;
-      transition: opacity 0.27s;
+      position: absolute; left: 43vw; top: 84px;
+      font-size: 1.19em; color: #f4e0bb;
+      background: rgba(30,15,4,0.63);
+      border-radius: 19px 23px 19px 27px/19px 28px 21px 19px;
+      padding: 18px 34px;
+      font-family: inherit;
+      box-shadow: 0 3px 19px #7f480026;
+      min-width: 189px; pointer-events: none; opacity: 0.96;
+      z-index: 11; transition: opacity .27s;
     }
 
-    /* Witty line typing bubble (reuse yours) */
-    #witty-line {
-      background: rgba(44,44,24,0.13);
-      border-radius: 9px;
-      box-shadow: 0 1.2px 9px #2225;
-      padding: 12px 22px;
-      color: #f3e8c6;
-    }
-
-    /* Chess piece row styling - slightly improved */
+    /* Chess Pieces Row & Typing */
     .chess-pieces-flex {
-      display: inline-flex;
-      gap: 36px;
-      justify-content: center;
-      align-items: end;
-      background: linear-gradient(to right, #201912 40%, #806754 90%);
-      padding: 26px 30px 28px 30px;
-      border-radius: 22px;
-      box-shadow: 0 3px 17px #84735a1a;
+      display:inline-flex; gap:36px; justify-content: center; align-items: end;
+      background: linear-gradient(to right, #242120 40%, #906950 90%);
+      padding: 26px 34px 24px 32px; border-radius: 22px;
+      box-shadow: 0 3px 16px #ad956244;
     }
     .chess-piece-img {
-      transition: transform 0.39s cubic-bezier(0.25, 1.2, 0.32, 1), filter 0.29s;
+      transition: transform .33s cubic-bezier(.22,1.1,.35,1), filter .25s;
       cursor: pointer;
-      filter: drop-shadow(0 6px 12px #0008);
+      filter: drop-shadow(0 7px 12px #0008);
     }
-    .chess-piece-img:hover {
-      z-index: 2;
-      transform: translateY(-28px) scale(1.13);
-      filter: drop-shadow(0 14px 18px #fff73ed7);
-    }
-    .chess-pieces-flex:hover .chess-piece-img:not(:hover) {
-      opacity: 0.38;
-      filter: none;
-      transform: scale(0.97);
+    .chess-piece-img:hover {z-index:2; transform:translateY(-24px) scale(1.12); filter:drop-shadow(0 16px 16px #fffc);}
+    .chess-pieces-flex:hover .chess-piece-img:not(:hover) {opacity: .35; transform: scale(.98);}
+
+    /* Witty line bubble */
+    #witty-line {background:rgba(44,44,24,.18); border-radius:7px;box-shadow:0 1px 7px #2225;padding:12px 16px;color:#f3e8c6;}
+
+    /* Section titles */
+    .section-title {
+      font-size: 2.1em; color: #ffe3c3; margin-bottom:6px;
+      font-family:'Palatino Linotype',serif; letter-spacing:1.1px;
     }
 
-    /* Misc. section styling improvements */
-    .section-title {
-      font-size: 2.5em;
-      color: #f4cfb5;
-      margin-bottom: 6px;
-      font-family: 'Palatino Linotype', Georgia, serif;
-      letter-spacing: 1.1px;
-    }
-    .section-subtitle {
-      font-size: 1.23em;
-      font-style: italic;
-      color: #faefd6da;
-    }
-    .featured-section {
-      width: 99vw;
-      background: url('headingimg.jpg') center center/cover no-repeat;
-      min-height: 29vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: end;
-      padding-top: 16px;
-      padding-bottom: 42px;
-      position: relative;
-      margin-left: -10px;
-      margin-top: 0;
-      box-shadow: 0 8px 34px #7a744011;
-    }
-    .featured-section > .overlay {
-      position: absolute; 
-      top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(0,0,0,0.38); 
-      border-radius: 0 0 12px 12px;
-      z-index: 1;
-    }
-    .featured-section > *:not(.overlay) {
-      position: relative;
-      z-index: 2;
-    }
+    /* Parallax (just for demo, not required) */
+    .feature-bg {background:#84654a url('headingimg.jpg') center/cover no-repeat;}
+    .parallax-ovl {background:rgba(0,0,0,.36);border-radius:0 0 12px 12px;}
   </style>
 </head>
 <body>
 
-  <!-- Chessboard glassy header nav -->
+  <!-- Nav bar -->
   <div class="header-container">
     <div class="nav-btn">Home</div>
     <div class="play-now-menu">
@@ -217,48 +140,98 @@
     <div class="nav-btn">Blogs</div>
   </div>
 
-  <!-- Hero Section with animated knights -->
+  <!-- Knights Hero/Selector -->
   <div class="top-box">
     <img src="images/knightmainnobg.png" alt="Black Knight" class="knight-img" />
     <img src="images/white-knight.webp" alt="White Knight" class="second-img" />
     <div id="hover-message" class="choice-msg" style="display:none;">Hover over a knight to start the game.</div>
   </div>
 
-  <!-- Featured Section with background image -->
-  <div class="featured-section">
-    <div class="overlay"></div>
-    <div class="section-title">Endgame: The Ultimate Source of Chess</div>
-    <div class="section-subtitle">
+  <div class="feature-bg" style="width:100vw;min-height:28vh;background: url('headingimg.jpg') center center/cover no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:end;padding-top:18px;padding-bottom:46px;position:relative;margin:0;box-shadow: 0 8px 34px #7a744011;">
+    <div class="parallax-ovl" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+    <div class="section-title" style="position:relative;z-index:2;">Endgame: The Ultimate Source of Chess</div>
+    <div class="section-subtitle" style="position:relative;z-index:2;">
       Because kings know it’s not over until the last move.
     </div>
   </div>
-
-  <div style="
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    background: rgba(114, 102, 86, 0.525); /* black, transparent */
-    color: #fff;
-    text-align: center;
-    padding: 20px 0 14px 0;
-    font-family: 'Georgia', serif;
-    margin: 0; /* absolutely no gap on left/right */
-    box-sizing: border-box;
-    overflow: hidden;
-    z-index: 10;
-    border-radius: 0 0 16px 16px;
-    box-shadow: 0 8px 32px #473d2214;">
+  <div style="position:relative;left:50%;transform:translateX(-50%);width:100vw;background:rgba(114,102,86,0.525);color:#fff;text-align:center;padding:20px 0 14px 0;font-family:Georgia,serif;margin:0;box-sizing:border-box;overflow:hidden;z-index:10;border-radius:0 0 16px 16px;box-shadow:0 8px 32px #473d2214;">
     <span class="section-title" style="font-size:1.3em;margin-bottom:0;">Meet the Royals and Rebels of the Chessboard:</span><br>
-    <span class="section-subtitle" style="font-size:1em;">Every chess piece has a personality — some rule, some rebel, but all play their part in the epic battle for the throne.</span>
+    <span class="section-subtitle" style="font-size:1em;">
+      Every chess piece has a personality — some rule, some rebel, but all play their part in the epic battle for the throne.
+    </span>
   </div>
 
-  <!-- Animated chess pieces row -->
-  <div id="chess-pieces-row" style="text-align: center; margin: 54px 0;">
+  <!-- Pieces row -->
+  <div id="chess-pieces-row" style="text-align:center;margin:54px 0;">
     <div class="chess-pieces-flex">
-      <img src="images/kingpng.png"   alt="King"   class="chess-piece-img"   data-witty="King: The ruler of the board. Moves one square at a time — slow and steady wins the throne."   style="width: 130px;">
+      <img src="images/kingpng.png"   alt="King"   class="chess-piece-img"   data-witty="King: The ruler of the board. Moves one square at a time — slow and steady wins the throne." style="width: 130px;">
       <img src="images/queenpng.png"  alt="Queen"  class="chess-piece-img"   data-witty="Queen: The powerhouse — moves any number of squares in any direction. Basically, the boss’s boss." style="width: 130px;">
       <img src="images/rookpng.png"   alt="Rook"   class="chess-piece-img"   data-witty="Rook: Straight shooter along ranks and files. Think of it as the castle’s express elevator." style="width: 130px;">
       <img src="images/bishoppng.png" alt="Bishop" class="chess-piece-img"   data-witty="Bishop: Moves diagonally like it’s cutting through the crowd stealthily. Sometimes sneaky, always sharp." style="width: 130px;">
       <img src="images/knightpng.png" alt="Knight" class="chess-piece-img"   data-witty="Knight: The wild card — jumps in an L-shape over others. The chessboard’s ninja." style="width: 130px;">
-      <img src="images/pawnpng.png"   alt="Pawn"   class="chess-piece-img"   data-witty="Pawn: The foot soldier with limited moves, but hey, they can transform
+      <img src="images/pawnpng.png"   alt="Pawn"   class="chess-piece-img"   data-witty="Pawn: The foot soldier with limited moves, but hey, they can transform into any piece — never underestimate the little guys." style="width: 130px;">
+    </div>
+    <p id="witty-line">
+      Hover over a piece to see its witty description.
+    </p>
+  </div>
+
+  <div id="board1" style="width: 400px; margin: 30px auto;"></div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Typewriter effect for chess piece witty lines
+    const wittyLine = document.getElementById('witty-line');
+    function typewriterEffect(text, speed=40) {
+      wittyLine.textContent = "";
+      let index = 0;
+      let interval = setInterval(() => {
+        if (index < text.length) {
+          wittyLine.textContent += text.charAt(index);
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }, speed);
+      return interval;
+    }
+    let typingInterval = null;
+    const pieces = document.querySelectorAll('.chess-piece-img');
+    pieces.forEach(piece => {
+      piece.addEventListener('mouseenter', () => {
+        if (typingInterval) clearInterval(typingInterval);
+        typewriterEffect(piece.getAttribute('data-witty'));
+      });
+      piece.addEventListener('mouseleave', () => {
+        if (typingInterval) clearInterval(typingInterval);
+        wittyLine.textContent = 'Hover over a piece to see its witty description.';
+      });
+    });
+
+    // Knight selection message UI
+    const blackKnight = document.querySelector('.knight-img');
+    const whiteKnight = document.querySelector('.second-img');
+    const hoverMsg = document.getElementById('hover-message');
+    blackKnight.addEventListener('mouseenter', () => {
+      hoverMsg.textContent = 'Start game as Black';
+      hoverMsg.style.display = 'block';
+    });
+    blackKnight.addEventListener('mouseleave', () => {
+      hoverMsg.style.display = 'none';
+    });
+    whiteKnight.addEventListener('mouseenter', () => {
+      hoverMsg.textContent = 'Start game as White';
+      hoverMsg.style.display = 'block';
+    });
+    whiteKnight.addEventListener('mouseleave', () => {
+      hoverMsg.style.display = 'none';
+    });
+  </script>
+  <!-- Chessboard.js libraries -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script>
+    var board1 = Chessboard('board1', 'start');
+  </script>
+</body>
+</html>
